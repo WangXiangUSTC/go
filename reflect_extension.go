@@ -241,13 +241,8 @@ func RegisterExtension(extension Extension) {
 	extensions = append(extensions, extension)
 }
 
-func DeRegisterExtension(extension Extension) {
-	for i, ext := range extensions {
-		if ext == extension {
-			extensions = append(extensions[:i], extensions[i+1:]...)
-			return
-		}
-	}
+func ClearExtensions() {
+	extensions = []Extension{}
 }
 
 func getTypeDecoderFromExtension(ctx *ctx, typ reflect2.Type) ValDecoder {
