@@ -2,12 +2,13 @@ package jsoniter
 
 import (
 	"fmt"
-	"github.com/modern-go/reflect2"
 	"reflect"
 	"sort"
 	"strings"
 	"unicode"
 	"unsafe"
+
+	"github.com/modern-go/reflect2"
 )
 
 var typeDecoders = map[string]ValDecoder{}
@@ -238,6 +239,15 @@ func RegisterFieldEncoder(typ string, field string, encoder ValEncoder) {
 // RegisterExtension register extension
 func RegisterExtension(extension Extension) {
 	extensions = append(extensions, extension)
+}
+
+func DeRegisterExtension(extension Extension) {
+	for i, ext := range extensions {
+		if ext == extension {
+			extensions = append(extensions[:i], extensions[i+1:]...)
+			return
+		}
+	}
 }
 
 func getTypeDecoderFromExtension(ctx *ctx, typ reflect2.Type) ValDecoder {
